@@ -1,8 +1,12 @@
+#include <WiFi.h>
+#include <HTTPClient.h>
 #include "DHT.h"
 #include "SparkFun_SGP40_Arduino_Library.h"
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_BMP280.h>
+
+#include "./env.h"
 
 Adafruit_BMP280 bmp;
 #define DHTTYPE DHT11
@@ -13,6 +17,8 @@ SGP40 sgp40;
 
 void setup() {
   Serial.begin(115200);
+
+  startWiFi();
 
   dht.begin();
   
@@ -44,6 +50,18 @@ void setup() {
     }
   }
 
+}
+
+void startWiFi()
+{
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi ");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print('.');
+    delay(1000);
+  }
+  Serial.println(WiFi.localIP());
 }
 
 void loop() {
