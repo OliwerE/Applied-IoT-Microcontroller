@@ -53,7 +53,7 @@ void loop() {
   float heatIndexC = dht.computeHeatIndex(temperatureC, humidity, false);
 
   // BMP280
-  float airPressure = bmp.readPressure();
+  float atmosphericPressure = bmp.readPressure();
 
   // SGP40
   int airQuality = sgp40.getVOCindex(humidity, temperatureC);
@@ -65,8 +65,8 @@ void loop() {
   Serial.print(heatIndexC);
   Serial.print("  ,Humidity: ");
   Serial.print(humidity);
-  Serial.print("  ,Air Pressure: ");
-  Serial.print(airPressure);
+  Serial.print("  ,Atmospheric pressure: ");
+  Serial.print(atmosphericPressure);
   Serial.print("  ,Air quality: ");
   Serial.print(airQuality);
   Serial.println();
