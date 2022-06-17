@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include "ArduinoJson.h"
 #include "DHT.h"
 #include "SparkFun_SGP40_Arduino_Library.h"
 #include <Wire.h>
@@ -89,10 +90,62 @@ void loop() {
   Serial.print(airQuality);
   Serial.println();
 
+  String sensorData = getSensorDataString(temperatureC, humidity, heatIndexC, atmosphericPressure, airQuality);
+  sendData(sensorData);
+
   delay(postInterval);
 }
 
-void sendData(sensorData)
+String getSensorDataString(float temperatureC, float humidity, float heatIndexC, float atmosphericPressure, int airQuality)
+{
+  DynamicJsonDocument doc(2048);
+  JsonArray array = doc.to<JsonArray>();
+
+  // Add temperature
+  if (!isnan(temperatureC))
+  {
+    JsonObject t = array.createNestedObject();
+    t["sensorName"] = "Temperature";
+    t["value"] = temperatureC; 
+  }
+
+  // Add humidity
+  if (!isnan(humidity))
+  {
+    JsonObject h = array.createNestedObject();
+    h["sensorName"] = "Humidity";
+    h["value"] = humidity; 
+  }
+
+  // Add heat index
+  if (!isnan(heatIndexC))
+  {
+    JsonObject hI = array.createNestedObject();
+    hI["sensorName"] = "Heat index";
+    hI["value"] = heatIndexC; 
+  }
+
+  // Add atmospheric pressure
+  JsonObject aP = array.createNestedObject();
+  aP["sensorName"] = "Atmospheric pressure";
+  aP["value"] = atmosphericPressure; 
+
+  // Add airquality
+  if (airQuality != -100)
+  {
+    JsonObject aQ = array.createNestedObject();
+    aQ["sensorName"] = "Air quality";
+    aQ["value"] = airQuality; 
+  }
+
+  doc["sensors"] = array;
+
+  String json;
+  serializeJson(doc, json);
+  return json;
+}
+
+bool sendData(String sensorData)
 {
   if(WiFi.status() != WL_CONNECTED){ // If WiFi has been disconnected
     reconnectWiFi();
