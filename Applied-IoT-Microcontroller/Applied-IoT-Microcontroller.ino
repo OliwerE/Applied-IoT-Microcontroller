@@ -115,7 +115,7 @@ String getSensorDataString(float temperatureC, float humidity, float heatIndexC,
   if (!isnan(temperatureC))
   {
     JsonObject t = array.createNestedObject();
-    t["sensorName"] = "Temperature";
+    t["sensorName"] = "temperature";
     t["value"] = temperatureC; 
   }
 
@@ -123,7 +123,7 @@ String getSensorDataString(float temperatureC, float humidity, float heatIndexC,
   if (!isnan(humidity))
   {
     JsonObject h = array.createNestedObject();
-    h["sensorName"] = "Humidity";
+    h["sensorName"] = "humidity";
     h["value"] = humidity; 
   }
 
@@ -131,20 +131,20 @@ String getSensorDataString(float temperatureC, float humidity, float heatIndexC,
   if (!isnan(heatIndexC))
   {
     JsonObject hI = array.createNestedObject();
-    hI["sensorName"] = "Heat index";
+    hI["sensorName"] = "heat-index";
     hI["value"] = heatIndexC; 
   }
 
   // Add atmospheric pressure
   JsonObject aP = array.createNestedObject();
-  aP["sensorName"] = "Atmospheric pressure";
+  aP["sensorName"] = "atmospheric-pressure";
   aP["value"] = atmosphericPressure; 
 
   // Add airquality
   if (airQuality != -100 && airQuality != 0) // -100 = error, 0 = sensor warming up
   {
     JsonObject aQ = array.createNestedObject();
-    aQ["sensorName"] = "Air quality";
+    aQ["sensorName"] = "air-quality";
     aQ["value"] = airQuality; 
   }
 
