@@ -16,6 +16,8 @@ Adafruit_BMP280 bmp;
 DHT dht(DHTPIN, DHTTYPE);
 SGP40 sgp40;
 
+int timer = postInterval; // timer to post data (seconds)
+
 void setup() {
   Serial.begin(115200);
 
@@ -90,10 +92,18 @@ void loop() {
   Serial.print(airQuality);
   Serial.println();
 
-  String sensorData = getSensorDataString(temperatureC, humidity, heatIndexC, atmosphericPressure, airQuality);
-  sendData(sensorData);
+  // send data only when timer is equal to zero.
+  if (timer <= 0)
+  {
+    String sensorData = getSensorDataString(temperatureC, humidity, heatIndexC, atmosphericPressure, airQuality);
+    sendData(sensorData);
 
-  delay(postInterval);
+    // reset timer
+    timer = postInterval;
+  }
+
+  timer--;
+  delay(1000);
 }
 
 String getSensorDataString(float temperatureC, float humidity, float heatIndexC, float atmosphericPressure, int airQuality)
@@ -131,7 +141,7 @@ String getSensorDataString(float temperatureC, float humidity, float heatIndexC,
   aP["value"] = atmosphericPressure; 
 
   // Add airquality
-  if (airQuality != -100)
+  if (airQuality != -100 && airQuality != 0) // -100 = error, 0 = sensor warming up
   {
     JsonObject aQ = array.createNestedObject();
     aQ["sensorName"] = "Air quality";
