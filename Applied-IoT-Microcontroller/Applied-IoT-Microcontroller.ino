@@ -89,5 +89,37 @@ void loop() {
   Serial.print(airQuality);
   Serial.println();
 
-  delay(1000);
+  delay(postInterval);
+}
+
+void sendData(sensorData)
+{
+  if(WiFi.status() != WL_CONNECTED){ // If WiFi has been disconnected
+    reconnectWiFi();
+  }
+
+  HTTPClient http;
+
+  http.begin(apiURL);
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("authorization", apiKey);
+  int res = http.POST(sensorData);
+  http.end();
+
+  if (res != 200) {
+    Serial.print("Error code (sendData): ");
+    Serial.println(res);
+    return false;
+  }
+  return true;
+}
+
+void reconnectWiFi()
+{
+  WiFi.reconnect();
+  Serial.print("Reconnecting to WiFi ");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print('.');
+    delay(1000);
+  }
 }
