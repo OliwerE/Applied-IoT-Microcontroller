@@ -9,7 +9,7 @@ Adafruit_BMP280 bmp;
 #define DHTPIN 14
 
 DHT dht(DHTPIN, DHTTYPE);
-SGP40 sgp40; //create an object of the SGP40 class
+SGP40 sgp40;
 
 void setup() {
   Serial.begin(115200);
@@ -20,11 +20,11 @@ void setup() {
 
   unsigned status;
   status = bmp.begin(0x76);
-  bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
-                  Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
-                  Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
-                  Adafruit_BMP280::FILTER_X16,      /* Filtering. */
-                  Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
+  bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,
+                  Adafruit_BMP280::SAMPLING_X2,
+                  Adafruit_BMP280::SAMPLING_X16,
+                  Adafruit_BMP280::FILTER_X16,
+                  Adafruit_BMP280::STANDBY_MS_500);
 
   if (sgp40.begin() == false)
   {
