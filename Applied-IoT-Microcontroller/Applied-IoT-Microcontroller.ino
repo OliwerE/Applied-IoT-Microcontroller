@@ -74,28 +74,15 @@ void loop() {
   float heatIndexC = dht.computeHeatIndex(temperatureC, humidity, false);
 
   // BMP280
-  float atmosphericPressure = bmp.readPressure();
+  float airPressure = bmp.readPressure();
 
   // SGP40
   int airQuality = sgp40.getVOCindex(humidity, temperatureC);
 
-  // Test
-  Serial.print("Temp C: ");
-  Serial.print(temperatureC);
-  Serial.print("  ,Heat index C: ");
-  Serial.print(heatIndexC);
-  Serial.print("  ,Humidity: ");
-  Serial.print(humidity);
-  Serial.print("  ,Atmospheric pressure: ");
-  Serial.print(atmosphericPressure);
-  Serial.print("  ,Air quality: ");
-  Serial.print(airQuality);
-  Serial.println();
-
   // send data only when timer is equal to zero.
   if (timer <= 0)
   {
-    String sensorData = getSensorDataString(temperatureC, humidity, heatIndexC, atmosphericPressure, airQuality);
+    String sensorData = getSensorDataString(temperatureC, humidity, heatIndexC, airPressure, airQuality);
     sendData(sensorData);
 
     // reset timer
@@ -106,18 +93,15 @@ void loop() {
   delay(1000);
 }
 
-String getSensorDataString(float temperatureC, float humidity, float heatIndexC, float atmosphericPressure, int airQuality)
+String getSensorDataString(float temperatureC, float humidity, float heatIndexC, float airPressure, int airQuality)
 {
   DynamicJsonDocument doc(2048);
   JsonArray array = doc.to<JsonArray>();
 
-  // Add temperature
-  if (!isnan(temperatureC))
-  {
-    JsonObject t = array.createNestedObject();
-    t["sensorName"] = "temperature";
-    t["value"] = temperatureC; 
-  }
+  // Add air pressure
+  JsonObject aP = array.createNestedObject();
+  aP["sensorName"] = "air-pressure";
+  aP["value"] = airPressure;
 
   // Add humidity
   if (!isnan(humidity))
@@ -135,10 +119,13 @@ String getSensorDataString(float temperatureC, float humidity, float heatIndexC,
     hI["value"] = heatIndexC; 
   }
 
-  // Add atmospheric pressure
-  JsonObject aP = array.createNestedObject();
-  aP["sensorName"] = "atmospheric-pressure";
-  aP["value"] = atmosphericPressure; 
+  // Add temperature
+  if (!isnan(temperatureC))
+  {
+    JsonObject t = array.createNestedObject();
+    t["sensorName"] = "temperature";
+    t["value"] = temperatureC; 
+  }
 
   // Add airquality
   if (airQuality != -100 && airQuality != 0) // -100 = error, 0 = sensor warming up
