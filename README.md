@@ -51,7 +51,7 @@ The microcontroller sends the data once every five minutes. WiFi is used as the 
 I chose WiFi because the sensors are placed indoors. Which means that i have access to a power outlet. This is useful because WiFi uses a lot of power. If the sensors were placed outdoors and was powered by a battery it would be more useful to use a wireless protocol with lower power consumtion and sending the data less frequently. Then I could use LoRa as the wireless protocol, which is both has low power and long range.
 
 ## Presenting the data
-![image](/img/dashboard.png)
+![image](/img/sensor-dashboard.png)
 The latest value is visualized using the gauges at the top. Each chart show the values from a sensor over time.
 
 The data is sent to the backend every five minutes. All data reports from the microcontroller are stored in the database for 31 days. They are used to calculate the average hourly and daily values. I chose MongoDB because it can handle large amounts of data.
