@@ -14,7 +14,7 @@ I chose this project because I'm spending a lot of time indoor studying and beca
 * [Breadboard cables, 29kr, Electrokit](https://www.electrokit.com/produkt/labbsladd-20-pin-15cm-hane-hane/)
 * [Temperature and humidity sensor (DHT11), 49kr, Electrokit](https://www.electrokit.com/produkt/digital-temperatur-och-fuktsensor-dht11/)
 * [Air quality sensor (SGP40), 249kr, Electrokit](https://www.electrokit.com/produkt/sparkfun-air-quality-sensor-sgp40-qwiic/)
-* [Air pressure sensor (BMP280), 5,5kr, Aliexpress](https://www.electrokit.com/produkt/adafruit-feather-huzzah32-esp32/)
+* [Air pressure sensor (BMP280), 5,5kr, Aliexpress](https://www.aliexpress.com/item/32681667220.html?spm=a2g0o.order_list.0.0.2f651802LWzHR6)
 
 The ESP32 huzzah is a ESP32 microcontroller on a development board. It is used to read data from the sensors and sending the values to the backend of the webapplication where they are stored in a database. The breadboard and breadboard cables are used to connect the sensors to the microcontroller. The DHT11 sensor is used to read temperature, heat index and humidity. The SGP40 sensor is an air quality sensor. It has a index range between 0 and 500. Zero means the air quality is good and 500 is very bad.
 
